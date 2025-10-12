@@ -16,7 +16,7 @@ export default function NewProject({onAdd, onCancel}) {
     const enteredDueDate = dueDate.current.value
 
     // Validation... 
-    if(enteredTitle.trim() === '' || enteredDescription.trim() || enteredDueDate.trim()){
+    if(enteredTitle.trim() === '' || enteredDescription.trim() === '' || enteredDueDate.trim() === ''){
         modal.current.open()
         return
     }
