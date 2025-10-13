@@ -1,94 +1,29 @@
-import { useState } from 'react';
-import NewProject from './components/NewProject';
-import NoProjectSelected from './components/NoProjectSelected';
+import { useContext } from 'react'
+import { TaskContext } from './store/tasks-context'
 import ProjectsSidebar from './components/ProjectsSideBar';
 import SelectedProject from './components/SelectedProject';
+import NewProject from './components/NewProject';
+import NoProjectSelected from './components/NoProjectSelected';
 
 function App() {
 
-  const [ projectsState, setProjectsState] = useState({
-    selectedProjectId: undefined,
-    projects: []    
-  })
+  const { projects, selectedProjectId } = useContext(TaskContext)
 
-  function handleAddProject() {
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: null
-      }
-    })
-  }
 
-  function handleCancelProject() {
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: undefined
-      }
-    })
-  }
+  let content = <SelectedProject />
 
-  function handleSaveProject(projectData) {
-
-    setProjectsState(prevState => {
-      const projectId = Math.random()
-
-      const newProject = {
-        ...projectData,
-        id: projectId
-      }
-
-      return {
-        ...prevState,
-        selectedProjectId: undefined,
-        projects: [...prevState.projects, newProject]
-      }
-
-    })
-
-  }
-
-  function handleSelectProject(id) {
-    setProjectsState((prevState) => {
-      return {
-        ...prevState,
-        selectedProjectId: id
-      }
-    })
-  }
-
-  function handleDeleteProject(){
-    setProjectsState(prevState => {
-      return {
-        ...prevState,
-        selectedProjectId: undefined,
-        projects: prevState.projects.filter(project => project.id !== prevState.selectedProjectId)
-      }
-    })
-  }
-
-  const selectedProject = projectsState.projects.find(project => project.id === projectsState.selectedProjectId)
-
-  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject} />
-
-  if(projectsState.selectedProjectId === null) {
-    content = <NewProject onAdd={handleSaveProject} onCancel={handleCancelProject}/>
-  } else if (projectsState.selectedProjectId === undefined) {
-    content = <NoProjectSelected onAddProject={handleAddProject} />
+  if(selectedProjectId === null) {
+    content = <NewProject/>
+  } else if (selectedProjectId === undefined) {
+    content = <NoProjectSelected />
   }
 
   return (
-    <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar 
-        onAddProject={handleAddProject} 
-        projects={projectsState.projects}
-        onSelectProject={handleSelectProject}
-        selectedProjectId={selectedProject && selectedProject.id}
-      />
-      {content}
-    </main>
-  );
+      <main className="h-screen my-8 flex gap-8">
+        <ProjectsSidebar />
+        {content}
+      </main>
+  )
 }
 
-export default App;
+export default App

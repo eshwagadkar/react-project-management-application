@@ -1,14 +1,16 @@
+import { useContext } from 'react'
 import Button from './Button'
+import { TaskContext } from '../store/tasks-context'
 
-export default function ProjectsSidebar({ onAddProject, 
-                                          projects,
-                                          onSelectProject,
-                                          selectedProjectId }) {
+export default function ProjectsSidebar() {
+
+    const { handleAddProject, projects, handleSelectProject, selectedProjectId } = useContext(TaskContext)
+
     return (
         <aside className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-r-xl">
             <h2 className="mb-8 font-bold uppercase md:text-xl text-stone-200">Your Project</h2>
             <div>
-               <Button onClick={onAddProject} >+ Add Project</Button>
+               <Button onClick={handleAddProject} >+ Add Project</Button>
             </div>
             <ul className='mt-8'>
                 {projects.map(project => {
@@ -24,7 +26,7 @@ export default function ProjectsSidebar({ onAddProject,
                     return <li key={project.id}>
                               <button 
                                  className={cssClasses}
-                                 onClick={() => onSelectProject(project.id)}>
+                                 onClick={() => handleSelectProject(project.id)}>
                                   {project.title}</button>
                             </li>
                         })

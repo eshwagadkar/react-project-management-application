@@ -1,9 +1,14 @@
+import { useContext } from 'react'
+import { TaskContext } from '../store/tasks-context'
+
 import noProjectImage from '../assets/no-projects.png'
 import Button from './Button'
 
-export default function NoProjectSelected({ onAddProject }) {
-    return <div className="mt-4 text-center w-2/3">
-        
+export default function NoProjectSelected() {
+
+    const { handleAddProject } = useContext(TaskContext)
+
+    return <div className="mt-4 text-center w-2/3">        
         <img 
           src={noProjectImage} 
           alt="An empty task list"
@@ -14,7 +19,7 @@ export default function NoProjectSelected({ onAddProject }) {
          </h2>
          <p className='text-stone-400 mb-4'>Select a project or get started with a new one</p>
          <p className='mt-8'>
-            <Button onClick={onAddProject} >Create a new Project</Button>
+            <Button onClick={handleAddProject} >Create a new Project</Button>
         </p>
     </div>
 }

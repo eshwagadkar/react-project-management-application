@@ -1,14 +1,17 @@
-import { useRef } from 'react'
+import { useRef, useContext } from 'react'
 import Input from './Input'
 import Modal from './Modal'
+import { TaskContext } from '../store/tasks-context'
 
-export default function NewProject({onAdd, onCancel}) {
+export default function NewProject() {
  
  const title = useRef()
  const description = useRef()
  const dueDate = useRef()
 
  const modal = useRef()
+
+ const { handleSaveProject, handleCancelProject} = useContext(TaskContext)
 
  function handleSave(){
     const enteredTitle = title.current.value
@@ -22,7 +25,7 @@ export default function NewProject({onAdd, onCancel}) {
     }
 
 
-    onAdd({
+    handleSaveProject({
         title: enteredTitle,
         description: enteredDescription,
         dueDate: enteredDueDate
@@ -40,7 +43,7 @@ export default function NewProject({onAdd, onCancel}) {
             <li>
                 <button 
                     className="text-stone-800 hover:text-strong-950"
-                    onClick={onCancel}>
+                    onClick={handleCancelProject}>
                     Cancel
                 </button>
             </li>
