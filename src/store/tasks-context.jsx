@@ -15,9 +15,10 @@ export const TaskContext = createContext({
 
 function TaskReducer(state, action) {
 
-  if(action.type === 'ADD_TASK') {
+  switch (action.type) {
 
-    const taskId = Math.random()
+    case 'ADD_TASK': {
+      const taskId = Math.random()
 
       const newTasks = {
         text: action.payload.text,
@@ -29,26 +30,31 @@ function TaskReducer(state, action) {
         ...state,
         tasks: [...state.tasks, newTasks]
       }
+    }
 
-  } else if (action.type === 'DELETE_TASK') {
-    return {
+    case 'DELETE_TASK': {
+      return {
         ...state,
         tasks: state.tasks.filter(task => task.id !== action.payload.id)
       }
+    }
 
-  } else if (action.type === 'ADD_PROJECT') {
-    return {
+    case 'ADD_PROJECT': {
+      return {
         ...state,
         selectedProjectId: null
       }
-  } else if (action.type === 'CANCEL_PROJECT') {
-     return {
+    }
+
+    case 'CANCEL_PROJECT': {
+      return {
         ...state,
         selectedProjectId: undefined
       }
-  } else if (action.type === 'SAVE_PROJECT') {
-    
-     const projectId = Math.random()
+    }
+
+    case 'SAVE_PROJECT': {
+      const projectId = Math.random()
 
       const newProject = {
         ...action.payload.data,
@@ -60,24 +66,30 @@ function TaskReducer(state, action) {
         selectedProjectId: undefined,
         projects: [...state.projects, newProject]
       }
+    }
 
-  } else if (action.type === 'SELECT_PROJECT') {
+    case 'SELECT_PROJECT': { 
+      return {
+         ...state,
+         selectedProjectId: action.payload.selectedProjectID
+       }
+    }
 
-     return {
-        ...state,
-        selectedProjectId: action.payload.selectedProjectID
-      }
-  } else if (action.type === 'DELETE_PROJECT') {
-     return {
-        ...state,
-        selectedProjectId: undefined,
-        projects: state.projects.filter(project => project.id !== state.selectedProjectId)
-      }
+    case 'DELETE_PROJECT' : {
+      return {
+         ...state,
+         selectedProjectId: undefined,
+         projects: state.projects.filter(project => project.id !== state.selectedProjectId)
+       }
+    }
+
+    default:
+      return state
+
   }
 
-
-  return state
 }
+
 
 export default function TaskContextProvider({children}) {
 
